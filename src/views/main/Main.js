@@ -18,7 +18,7 @@ import {cropPicture} from '../../helpers/image-helper';
 
 import {Camera} from 'expo-camera';
 
-const RESULT_MAPPING = ['Triangle', 'Circle', 'Square'];
+const RESULT_MAPPING = ['맛있어!', '맛없어!'];
 
 const Main = () => {
   const cameraRef = useRef();
@@ -36,14 +36,19 @@ const Main = () => {
   const processImagePrediction = async (base64Image) => {
     const croppedData = await cropPicture(base64Image, 300);
     const model = await getModel();
+    console.log(model);
     const tensor = await convertBase64ToTensor(croppedData.base64);
 
     const prediction = await startPrediction(model, tensor);
-
+    console.log(prediction);
     const highestPrediction = prediction.indexOf(
       Math.max.apply(null, prediction),
     );
-    setPresentedShape(RESULT_MAPPING[highestPrediction]);
+    setPresentedShape(
+      // prediction[highestPrediction] * 100 +
+      //   '% 확률로 ' +
+      RESULT_MAPPING[highestPrediction],
+    );
   };
 
   return (
@@ -51,7 +56,7 @@ const Main = () => {
       <Modal visible={isProcessing} transparent={true} animationType="slide">
         <View style={styles.modal}>
           <View style={styles.modalContent}>
-            <Text>Your current shape is {presentedShape}</Text>
+            <Text>이 샤인 머스켓은... {presentedShape}</Text>
             {presentedShape === '' && <ActivityIndicator size="large" />}
             <Pressable
               style={styles.dismissButton}
@@ -70,10 +75,12 @@ const Main = () => {
         style={styles.camera}
         type={Camera.Constants.Type.back}
         autoFocus={true}
-        whiteBalance={Camera.Constants.WhiteBalance.auto}></Camera>
+        whiteBalance={Camera.Constants.WhiteBalance.auto}
+      />
       <Pressable
         onPress={() => handleImageCapture()}
-        style={styles.captureButton}></Pressable>
+        style={styles.captureButton}
+      />
     </View>
   );
 };

@@ -7,22 +7,22 @@ import {MainStack} from './src/navigation';
 
 const App = () => {
   // Use this to initialize everything regarding app services
-  const token = useSelector((state) => state.auth.token);
+  // const token = useSelector((state) => state.auth.token);
 
-  useEffect(() => {
-    // This runs only once on app open
-    initializeAxios();
-    if (!token) {
-      // Auth user by your provider
-    }
-  }, []);
+  // useEffect(() => {
+  //   // This runs only once on app open
+  //   initializeAxios();
+  //   if (!token) {
+  //     // Auth user by your provider
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    // This runs on token change
-    if (token) {
-      assignTokenHeader(token);
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   // This runs on token change
+  //   if (token) {
+  //     assignTokenHeader(token);
+  //   }
+  // }, [token]);
 
   return <MainStack />;
 };
